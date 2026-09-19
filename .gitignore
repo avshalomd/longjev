@@ -1,0 +1,16 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.longjev_cache/
+data/
+results/raw/
+.pytest_cache/
+dist/
+.DS_Store
+
+# Benchmark results and the lab notebook stay local: TypeSafe's terms forbid publishing
+# benchmarks or performance information about Jev.
+ideas.md
+results/*.json
+results/report.html

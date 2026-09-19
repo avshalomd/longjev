@@ -1,0 +1,167 @@
+{
+  "source": "LongBench v2 public leaderboard, https://longbench2.github.io/ (read 2026-09-18)",
+  "prices": "OpenRouter list prices per million tokens, https://openrouter.ai/api/v1/models (read 2026-09-18)",
+  "assumed_output_tokens": {
+    "direct": 10,
+    "reasoning": 4000
+  },
+  "human": {
+    "short": 47.2,
+    "medium": 59.1,
+    "long": 53.7,
+    "overall": 53.7
+  },
+  "models": [
+    {
+      "name": "GPT-4o (2024-08)",
+      "mode": "direct",
+      "short": 53.3,
+      "medium": 52.4,
+      "overall": 50.1,
+      "in": 2.5,
+      "out": 10.0
+    },
+    {
+      "name": "Qwen3-235B Instruct",
+      "mode": "direct",
+      "short": 52.2,
+      "medium": 44.2,
+      "overall": 46.7,
+      "in": 0.087,
+      "out": 0.35
+    },
+    {
+      "name": "Kimi K2 Instruct",
+      "mode": "direct",
+      "short": 51.7,
+      "medium": 39.1,
+      "overall": 44.9,
+      "in": 0.57,
+      "out": 2.3
+    },
+    {
+      "name": "Llama 3.3 70B",
+      "mode": "direct",
+      "short": 36.7,
+      "medium": 27.0,
+      "overall": 29.8,
+      "in": 0.1,
+      "out": 0.32
+    },
+    {
+      "name": "Llama 3.1 8B",
+      "mode": "direct",
+      "short": 35.0,
+      "medium": 27.9,
+      "overall": 30.0,
+      "in": 0.05,
+      "out": 0.08
+    },
+    {
+      "name": "GPT-4o mini",
+      "mode": "direct",
+      "short": 31.8,
+      "medium": 28.6,
+      "overall": 29.3,
+      "in": 0.15,
+      "out": 0.6
+    },
+    {
+      "name": "Gemini 2.5 Flash",
+      "mode": "reasoning",
+      "short": 68.3,
+      "medium": 60.0,
+      "overall": 62.1,
+      "in": 0.3,
+      "out": 2.5
+    },
+    {
+      "name": "Gemini 2.5 Pro",
+      "mode": "reasoning",
+      "short": 67.2,
+      "medium": 56.3,
+      "overall": 63.3,
+      "in": 1.25,
+      "out": 10.0
+    },
+    {
+      "name": "DeepSeek-R1 0528",
+      "mode": "reasoning",
+      "short": 66.7,
+      "medium": 50.9,
+      "overall": 56.7,
+      "in": 0.5,
+      "out": 2.15
+    },
+    {
+      "name": "Qwen3-235B Thinking",
+      "mode": "reasoning",
+      "short": 62.8,
+      "medium": 59.9,
+      "overall": 60.6,
+      "in": 0.23,
+      "out": 2.3
+    }
+  ],
+  "newer_source": "Vendor model cards: Kimi K2.5 (huggingface.co/moonshotai/Kimi-K2.5) and Qwen3.5-397B-A17B (huggingface.co/Qwen/Qwen3.5-397B-A17B), which report the same scores for the models they share; Qwen3.8 Max from its model card as listed by llm-stats.com and benchlm.ai (read 2026-09-18). Overall accuracy on all 503 questions, reasoning mode, inputs cut to about 128K tokens. Not measured by the LongBench authors; no per-length breakdown is published.",
+  "newer": [
+    {
+      "name": "Gemini 3 Pro",
+      "overall": 68.2,
+      "in": 2.0,
+      "out": 12.0,
+      "by": "Moonshot, Qwen",
+      "note": "OpenRouter no longer lists it; price is its successor Gemini 3.1 Pro's, equal to Gemini 3 Pro's launch price"
+    },
+    {
+      "name": "Qwen3.8 Max",
+      "overall": 66.3,
+      "in": 2.0,
+      "out": 6.0,
+      "by": "Qwen (own model)"
+    },
+    {
+      "name": "Claude Opus 4.5",
+      "overall": 64.4,
+      "in": 5.0,
+      "out": 25.0,
+      "by": "Moonshot, Qwen"
+    },
+    {
+      "name": "Qwen3.5-397B",
+      "overall": 63.2,
+      "in": 0.55,
+      "out": 3.5,
+      "by": "Qwen (own model)"
+    },
+    {
+      "name": "Kimi K2.5",
+      "overall": 61.0,
+      "in": 0.45,
+      "out": 2.25,
+      "by": "Moonshot (own model)"
+    },
+    {
+      "name": "Qwen3-Max Thinking",
+      "overall": 60.6,
+      "in": 0.78,
+      "out": 3.9,
+      "by": "Qwen (own model)"
+    },
+    {
+      "name": "DeepSeek V3.2",
+      "overall": 59.8,
+      "in": 0.269,
+      "out": 0.4,
+      "by": "Moonshot"
+    },
+    {
+      "name": "GPT-5.2 (xhigh)",
+      "overall": 54.5,
+      "in": 1.75,
+      "out": 14.0,
+      "by": "Moonshot, Qwen",
+      "note": "about 10% of its runs returned no output and were counted wrong, so this likely understates it"
+    }
+  ]
+}

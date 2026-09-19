@@ -1,0 +1,375 @@
+<title>longjev LongBench results</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600&display=swap">
+<style>
+:root{
+  --page:#f5f6f3; --surface:#fcfcfb; --ink:#11140f; --ink2:#4b5047; --muted:#80857b;
+  --hair:#dfe2da; --axis:#c3c7bc; --accent:#0f5c55; --wash:rgba(15,92,85,.07);
+  --s-jev:#2a78d6; --s-embed:#eb6834; --s-etj:#1baf7a; --s-vote:#eda100; --s-floor:#8d9288;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --page:#0e100e; --surface:#1a1a19; --ink:#f2f4ee; --ink2:#c2c6bb; --muted:#8b9085;
+    --hair:#2c2f2b; --axis:#3d413b; --accent:#62c4b7; --wash:rgba(98,196,183,.09);
+    --s-jev:#3987e5; --s-embed:#d95926; --s-etj:#199e70; --s-vote:#c98500; --s-floor:#7b8076;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#0e100e; --surface:#1a1a19; --ink:#f2f4ee; --ink2:#c2c6bb; --muted:#8b9085;
+  --hair:#2c2f2b; --axis:#3d413b; --accent:#62c4b7; --wash:rgba(98,196,183,.09);
+  --s-jev:#3987e5; --s-embed:#d95926; --s-etj:#199e70; --s-vote:#c98500; --s-floor:#7b8076;
+}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font:16px/1.6 var(--sans);padding-inline:20px;padding-block:40px 80px}
+main{max-width:920px;margin-inline:auto;display:flex;flex-direction:column;gap:56px}
+.prose{max-width:66ch}
+header .kicker{font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font:600 clamp(30px,5vw,44px)/1.08 var(--cond);margin:14px 0 14px;text-wrap:balance;letter-spacing:-.01em}
+h2{font:600 24px/1.2 var(--cond);margin:0 0 10px;text-wrap:balance}
+h3{font:600 15px/1.3 var(--sans);margin:0 0 4px}
+p{margin:0 0 12px}
+.lede{font-size:18px;color:var(--ink2)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font:400 13px/1.5 var(--mono);color:var(--ink2);margin-top:18px;padding-top:14px;border-top:1px solid var(--hair)}
+.meta b{color:var(--ink);font-weight:500}
+section{display:flex;flex-direction:column;gap:18px}
+.legend i.mk-ring{background:var(--surface);border:1.75px solid var(--ink2);box-sizing:border-box}
+.legend i.mk-square{background:var(--surface);border:1.75px solid var(--ink);border-radius:2px;box-sizing:border-box}
+.markkey{margin:8px 0 0;font-size:12.5px;line-height:1.45;color:var(--ink2)}
+.marktick{display:inline-block;width:2px;height:13px;background:var(--ink);border-radius:1px;margin:0 8px -2px 2px}
+figure{margin:0;background:var(--surface);border:1px solid var(--hair);border-radius:6px;padding:20px 20px 14px}
+figcaption{margin-bottom:12px}
+figcaption p{margin:0;color:var(--ink2);font-size:14px;line-height:1.5}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--ink2);margin:0 0 8px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.chart{width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font-family:var(--sans);fill:var(--ink2)}
+.chart .tick{font-size:11px;fill:var(--muted);font-variant-numeric:tabular-nums}
+.chart .rowlabel{font-size:13px;fill:var(--ink)}
+.chart .rowsub{font-size:11px;fill:var(--muted)}
+.chart .val{font-size:12px;fill:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.chart .ref{font-size:11px;fill:var(--muted)}
+.chart [tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chart .mark{cursor:default}
+details{margin-top:10px;font-size:13px}
+summary{cursor:pointer;color:var(--ink2);font:400 12px/1 var(--mono);padding:6px 0}
+summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:6px 10px;border-bottom:1px solid var(--hair);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;color:var(--muted);font-size:12px}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.note{font-size:14px;color:var(--ink2)}
+.callout{background:var(--wash);border-radius:6px;padding:16px 18px;font-size:15px}
+.callout p:last-child{margin:0}
+ul{margin:0;padding-left:20px}
+li{margin-bottom:8px}
+code{font:400 .88em var(--mono);background:var(--wash);padding:1px 5px;border-radius:3px}
+#tip{position:fixed;pointer-events:none;z-index:10;background:var(--ink);color:var(--page);padding:8px 10px;border-radius:5px;font-size:12px;line-height:1.45;max-width:260px;box-shadow:0 4px 14px rgba(0,0,0,.22)}
+#tip b{display:block;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+#tip span{opacity:.78}
+.strip-q{font-size:14px;color:var(--ink2);margin:0 0 10px}
+.strip-q strong{color:var(--ink);font-weight:600}
+footer{font:400 12px/1.6 var(--mono);color:var(--muted);border-top:1px solid var(--hair);padding-top:16px}
+@media (max-width:560px){
+  body{font-size:15px}
+  figure{padding:16px 14px 10px}
+}
+</style>
+
+<main>
+<header>
+  <div class="kicker">longjev · version 1</div>
+  <h1>LongBench v2 run</h1>
+  <div class="meta" id="meta"></div>
+</header>
+
+<section>
+  <h2>Accuracy of the four selectors</h2>
+  <figure>
+    <figcaption><h3>Correct answers on the test split, inputs too long for Jev</h3>
+      <p>Dot is accuracy; the bar is the 95% interval. Each method runs at the budget that did best on the separate dev split. The dev scores themselves are left off this chart because the budgets were tuned on them, which flatters them; they are in the table below and in the sweep chart further down.</p></figcaption>
+    <div class="chart" id="c-headline"></div>
+    <details><summary>Table</summary><div class="scroll" id="t-headline"></div></details>
+  </figure>
+  <div class="scroll" id="pairs"></div>
+</section>
+
+<section>
+  <h2>Cost and speed per question</h2>
+  <div class="pair">
+  <figure>
+    <figcaption><h3>Cost per question, US cents</h3><p>Median over the questions that needed reducing. Scoring plus the final call, at list prices.</p></figcaption>
+    <div class="chart" id="c-cost"></div>
+    <details><summary>Table</summary><div class="scroll" id="t-cost"></div></details>
+  </figure>
+  <figure>
+    <figcaption><h3>Time to an answer, seconds</h3><p>Median, one question at a time, up to 64 requests in flight. Bars start cold: nothing cached, nothing indexed.</p></figcaption>
+    <div class="chart" id="c-latency"></div>
+    <p class="markkey" id="k-latency" hidden><span class="marktick" aria-hidden="true"></span>With a prebuilt index: the chunks were embedded ahead of time, so only the query is embedded live. Jev's chunk scores depend on the question and cannot be prepared ahead.</p>
+    <details><summary>Table</summary><div class="scroll" id="t-latency"></div></details>
+  </figure>
+  </div>
+  <figure>
+    <figcaption><h3>Time to an answer against input length</h3><p>Each dot is one question run through one selector. Hover for the request count.</p></figcaption>
+    <div class="legend" id="l-lat"></div>
+    <div class="chart" id="c-latscatter"></div>
+  </figure>
+</section>
+
+<section>
+  <h2>Against LLMs that read the whole input</h2>
+  <figure>
+    <figcaption><h3>Accuracy against cost per question, LongBench v2 "short" category</h3>
+      <p>Coloured dots are longjev, measured here. Rings are LLM scores on the same short category, from the LongBench v2 leaderboard, whose newest entries date from July 2025. Squares are newer models: their makers publish only an overall score across all lengths, so read them as roughly placed, not like-for-like. All LLM costs are estimated from input length and list prices. Cost axis is logarithmic.</p></figcaption>
+    <div class="legend" id="l-llm"></div>
+    <div class="chart" id="c-llm"></div>
+    <details open><summary>Table</summary><div class="scroll" id="t-llm"></div></details>
+  </figure>
+</section>
+
+<section>
+  <h2>How much text to keep</h2>
+  <figure>
+    <figcaption><h3>Accuracy by size of the reduced text, dev split</h3>
+      <p>Same questions, three budgets. Jev's limit is 32,000 tokens; 28,000 is the most longjev sends.</p></figcaption>
+    <div class="legend" id="l-sweep"></div>
+    <div class="chart" id="c-sweep"></div>
+    <details><summary>Table</summary><div class="scroll" id="t-sweep"></div></details>
+  </figure>
+</section>
+
+<section>
+  <h2>Accuracy by input length and task type</h2>
+  <div class="legend" id="l-break"></div>
+  <figure>
+    <figcaption><h3>By length of the original input</h3><p>Tokens as Jev counts them. All items that needed reducing, dev and test together.</p></figcaption>
+    <div class="chart" id="c-size"></div>
+    <details><summary>Table</summary><div class="scroll" id="t-size"></div></details>
+  </figure>
+  <figure>
+    <figcaption><h3>By task type</h3><p>LongBench v2's six categories. Small groups have wide intervals; hover for counts.</p></figcaption>
+    <div class="chart" id="c-domain"></div>
+    <details><summary>Table</summary><div class="scroll" id="t-domain"></div></details>
+  </figure>
+</section>
+
+<section>
+  <h2>Which chunks each selector keeps</h2>
+  <div id="strips" style="display:flex;flex-direction:column;gap:18px"></div>
+</section>
+
+<section>
+  <h2>The per-chunk vote</h2>
+  <div class="scroll" id="agreement"></div>
+</section>
+
+<section>
+  <h2>Does cutting text hurt when the input already fits?</h2>
+  <figure>
+    <figcaption><h3>Inputs that fit in Jev's window: full text against 8,000 tokens of it</h3>
+      <p>Control group. Same items on every row.</p></figcaption>
+    <div class="chart" id="c-control"></div>
+    <details><summary>Table</summary><div class="scroll" id="t-control"></div></details>
+  </figure>
+</section>
+
+<footer id="foot"></footer>
+</main>
+<div id="tip" hidden></div>
+
+<script>
+const DATA = /*DATA*/null;
+const SERIES = {
+  truncate:{label:"Keep start and end",short:"start + end",color:"var(--s-floor)"},
+  embed:{label:"Embeddings",short:"embeddings",color:"var(--s-embed)"},
+  embed_then_jev:{label:"Embeddings, then Jev",short:"embeddings → Jev",color:"var(--s-etj)"},
+  jev:{label:"Jev reads every chunk",short:"Jev reads all",color:"var(--s-jev)"},
+  vote:{label:"Per-chunk vote",color:"var(--s-vote)"},
+  direct:{label:"Full text, no reduction",color:"var(--ink)"}
+};
+const NS="http://www.w3.org/2000/svg";
+const el=(t,a={},txt)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);if(txt!=null)n.textContent=txt;return n};
+const h=(t,a={},txt)=>{const n=document.createElement(t);for(const k in a)n.setAttribute(k,a[k]);if(txt!=null)n.textContent=txt;return n};
+const pct=v=>v==null?"–":(100*v).toFixed(1)+"%";
+const tip=document.getElementById("tip");
+function showTip(e,head,lines){tip.replaceChildren(h("b",{},head),...lines.map(l=>{const s=h("span",{},l);s.style.display="block";return s}));tip.hidden=false;
+  const r=e.target.getBoundingClientRect?e.target.getBoundingClientRect():null;
+  let x=(e.clientX??(r?r.left+r.width/2:0))+14,y=(e.clientY??(r?r.top:0))+14;
+  const w=tip.offsetWidth,hh=tip.offsetHeight;if(x+w>innerWidth-8)x=innerWidth-w-8;if(y+hh>innerHeight-8)y=y-hh-28;tip.style.left=x+"px";tip.style.top=Math.max(8,y)+"px"}
+function hideTip(){tip.hidden=true}
+function hover(node,head,lines){node.setAttribute("tabindex","0");node.classList.add("mark");
+  node.addEventListener("pointermove",e=>showTip(e,head,lines));node.addEventListener("pointerleave",hideTip);
+  node.addEventListener("focus",e=>showTip(e,head,lines));node.addEventListener("blur",hideTip)}
+function legend(id,keys){const box=document.getElementById(id);box.replaceChildren(...keys.map(k=>{const s=h("span");const i=h("i");i.style.background=SERIES[k].color;s.append(i,document.createTextNode(SERIES[k].label));return s}))}
+function table(id,head,rows){const t=h("table");const tr=h("tr");head.forEach(c=>tr.append(h("th",{},c)));t.append(tr);
+  rows.forEach(r=>{const x=h("tr");r.forEach(c=>x.append(h("td",{},c)));t.append(x)});document.getElementById(id).replaceChildren(t)}
+const accCell=a=>a&&a.n?`${pct(a.acc)}  (${a.k}/${a.n})`:"–";
+
+/* rows of dots on one accuracy axis; optional interval bars and reference lines */
+function dotRows(id,rows,opt={}){
+  const box=document.getElementById(id);const W=Math.max(300,box.clientWidth);const narrow=W<560;
+  const labelW=narrow?0:Math.min(230,W*0.3),padR=opt.values?64:18,x0=labelW+6,x1=W-padR;
+  const max=opt.max??0.8,top=opt.refs?30:12,rowH=narrow?52:(opt.interval?38:34);
+  const H=top+rows.length*rowH+26;const sx=v=>x0+(x1-x0)*Math.min(v,max)/max;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":opt.aria||"accuracy chart"});
+  for(let t=0;t<=max+1e-9;t+=0.1){svg.append(el("line",{x1:sx(t),x2:sx(t),y1:top,y2:H-22,stroke:"var(--hair)","stroke-width":1}));
+    svg.append(el("text",{x:sx(t),y:H-6,"text-anchor":"middle",class:"tick"},Math.round(t*100)+"%"))}
+  (opt.refs||[]).forEach(r=>{svg.append(el("line",{x1:sx(r.value),x2:sx(r.value),y1:top-4,y2:H-22,stroke:"var(--axis)","stroke-width":1.5}));
+    svg.append(el("text",{x:sx(r.value),y:top-10,"text-anchor":r.anchor||"middle",class:"ref"},r.label))});
+  rows.forEach((row,i)=>{const cy=top+i*rowH+(narrow?34:rowH/2);
+    if(narrow){svg.append(el("text",{x:x0,y:cy-18,class:"rowlabel"},row.label+(row.sub?"  · "+row.sub:"")))}
+    else{svg.append(el("text",{x:0,y:cy+(row.sub?-2:4),class:"rowlabel"},row.label));if(row.sub)svg.append(el("text",{x:0,y:cy+13,class:"rowsub"},row.sub))}
+    svg.append(el("line",{x1:x0,x2:x1,y1:cy,y2:cy,stroke:"var(--hair)","stroke-width":1}));
+    const pts=row.points.filter(p=>p.a&&p.a.n);
+    pts.forEach(p=>{const c=SERIES[p.s].color;
+      if(opt.interval)svg.append(el("line",{x1:sx(p.a.low),x2:sx(p.a.high),y1:cy,y2:cy,stroke:c,"stroke-width":2,"stroke-linecap":"round",opacity:.55}));
+      const g=el("g");g.append(el("circle",{cx:sx(p.a.acc),cy,r:12,fill:"transparent"}));
+      g.append(el("circle",{cx:sx(p.a.acc),cy,r:5.5,fill:c,stroke:"var(--surface)","stroke-width":2}));
+      hover(g,pct(p.a.acc),[SERIES[p.s].label+(row.points.length>1?" · "+row.label:""),`${p.a.k} of ${p.a.n} correct`,`95% interval ${pct(p.a.low)} to ${pct(p.a.high)}`]);svg.append(g)});
+    if(opt.values&&pts.length===1)svg.append(el("text",{x:W,y:cy+4,"text-anchor":"end",class:"val"},pct(pts[0].a.acc)));
+  });
+  box.replaceChildren(svg)}
+
+function sweep(id){
+  const box=document.getElementById(id);const W=Math.max(300,box.clientWidth);const H=300,l=44,r=W<560?20:170,t=16,b=34;
+  const budgets=["8000","16000","28000"],keys=["truncate","embed","embed_then_jev","jev"];
+  const vals=keys.flatMap(k=>budgets.map(bu=>DATA.sweep.dev[k][bu].acc)).filter(v=>v!=null);
+  const lo=Math.max(0,Math.floor((Math.min(...vals)-0.05)*10)/10),hi=Math.min(1,Math.ceil((Math.max(...vals)+0.05)*10)/10);
+  const sx=i=>l+(W-l-r)*(i/2),sy=v=>t+(H-t-b)*(1-(v-lo)/(hi-lo));
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"accuracy by budget"});
+  for(let v=lo;v<=hi+1e-9;v+=0.1){svg.append(el("line",{x1:l,x2:W-r,y1:sy(v),y2:sy(v),stroke:"var(--hair)","stroke-width":1}));
+    svg.append(el("text",{x:l-8,y:sy(v)+4,"text-anchor":"end",class:"tick"},Math.round(v*100)+"%"))}
+  if(lo<=0.25&&hi>=0.25){svg.append(el("line",{x1:l,x2:W-r,y1:sy(.25),y2:sy(.25),stroke:"var(--axis)","stroke-width":1.5}));svg.append(el("text",{x:l+4,y:sy(.25)-5,class:"ref"},"guessing 25%"))}
+  budgets.forEach((bu,i)=>svg.append(el("text",{x:sx(i),y:H-10,"text-anchor":"middle",class:"tick"},(+bu/1000)+"K tokens")));
+  const ends=[];
+  keys.forEach(k=>{const pts=budgets.map((bu,i)=>({i,a:DATA.sweep.dev[k][bu]})).filter(p=>p.a.n);
+    svg.append(el("path",{d:pts.map((p,j)=>(j?"L":"M")+sx(p.i)+" "+sy(p.a.acc)).join(" "),fill:"none",stroke:SERIES[k].color,"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"}));
+    pts.forEach(p=>{const g=el("g");g.append(el("circle",{cx:sx(p.i),cy:sy(p.a.acc),r:12,fill:"transparent"}));
+      g.append(el("circle",{cx:sx(p.i),cy:sy(p.a.acc),r:4.5,fill:SERIES[k].color,stroke:"var(--surface)","stroke-width":2}));
+      hover(g,pct(p.a.acc),[SERIES[k].label,`${budgets[p.i]/1000}K tokens · ${p.a.k} of ${p.a.n}`,`95% interval ${pct(p.a.low)} to ${pct(p.a.high)}`]);svg.append(g)});
+    const last=pts[pts.length-1];ends.push({k,y:sy(last.a.acc),v:last.a.acc})});
+  if(W>=560){ends.sort((a,b)=>a.y-b.y);for(let i=1;i<ends.length;i++)if(ends[i].y-ends[i-1].y<15)ends[i].ly=(ends[i-1].ly??ends[i-1].y)+15;
+    ends.forEach(e=>{const ly=e.ly??e.y;if(Math.abs(ly-e.y)>1)svg.append(el("line",{x1:W-r+6,x2:W-r+14,y1:e.y,y2:ly,stroke:"var(--axis)","stroke-width":1}));
+      svg.append(el("text",{x:W-r+18,y:ly+4,class:"rowsub",style:"fill:var(--ink)"},SERIES[e.k].label))})}
+  box.replaceChildren(svg)}
+
+function bars(id,rows,fmt){
+  const box=document.getElementById(id);const W=Math.max(300,box.clientWidth);const narrow=W<560;const marked=rows.some(r=>r.mark);const labelW=narrow?0:Math.min(230,W*0.3),rowH=(narrow?48:34)+(marked?12:0),top=6;
+  const max=Math.max(...rows.map(r=>r.v))*1.05,x0=labelW+6,x1=W-70;const H=top+rows.length*rowH+8;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"cost per question"});
+  svg.append(el("line",{x1:x0,x2:x0,y1:top,y2:H-6,stroke:"var(--axis)","stroke-width":1}));
+  rows.forEach((r,i)=>{const cy=top+i*rowH+(narrow?30:rowH/2),w=Math.max(2,(x1-x0)*r.v/max);
+    svg.append(el("text",narrow?{x:x0,y:cy-16,class:"rowlabel"}:{x:0,y:cy+4,class:"rowlabel"},SERIES[r.s].label));
+    const bar=el("path",{d:`M${x0} ${cy-8}h${w-4}a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h${-(w-4)}z`,fill:SERIES[r.s].color});
+    hover(bar,fmt(r.v),[SERIES[r.s].label,...(r.lines||[])]);svg.append(bar);
+    svg.append(el("text",{x:x0+w+8,y:cy+4,class:"val"},fmt(r.v)));
+    if(r.mark){const mx=x0+(x1-x0)*r.mark.v/max;
+      svg.append(el("line",{x1:mx,x2:mx,y1:cy-10,y2:cy+12,stroke:"var(--surface)","stroke-width":6,"stroke-linecap":"round"}));
+      const tick=el("line",{x1:mx,x2:mx,y1:cy-10,y2:cy+12,stroke:"var(--ink)","stroke-width":2,"stroke-linecap":"round"});svg.append(tick);
+      svg.append(el("text",{x:mx,y:cy+25,"text-anchor":mx-x0<24?"start":"middle",class:"tick"},fmt(r.mark.v)));
+      const hit=el("rect",{x:mx-9,y:cy-15,width:18,height:30,fill:"transparent"});hover(hit,fmt(r.mark.v),[SERIES[r.s].label,...r.mark.lines]);svg.append(hit)}});
+  box.replaceChildren(svg)}
+
+function strip(container,ex){
+  const fig=h("figure");const cap=h("figcaption");cap.append(h("h3",{},ex.title));const q=h("p",{class:"strip-q"});
+  q.append(h("strong",{},"Question: "),document.createTextNode(ex.question));cap.append(q);const p=h("p");
+  p.textContent=`${ex.n_chunks} chunks, about ${Math.round(ex.context_tokens/1000)}K tokens. Correct answer ${ex.answer}. Jev selection answered ${ex.jev_choice}; embedding selection answered ${ex.embed_choice}.`;
+  cap.append(p);fig.append(cap);const box=h("div",{class:"chart"});fig.append(box);container.append(fig);
+  const draw=()=>{const W=Math.max(300,box.clientWidth),l=W<560?0:150,rowH=26,gap=30,top=W<560?18:6,n=ex.jev.length,cw=(W-l)/n;
+    const H=top+2*(rowH+14)+gap+18;const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":"relevance along the document"});
+    const emin=Math.min(...ex.embed),emax=Math.max(...ex.embed);
+    [["jev","Jev: relevance (0 to 1)",ex.jev,v=>v,ex.kept_jev,"var(--s-jev)"],["embed","Embedding similarity (scaled)",ex.embed,v=>(v-emin)/(emax-emin||1),ex.kept_embed,"var(--s-embed)"]].forEach(([k,name,arr,norm,kept,color],ri)=>{
+      const y=top+ri*(rowH+14+gap);
+      svg.append(el("text",W<560?{x:0,y:y-5,class:"rowsub"}:{x:0,y:y+rowH/2+4,class:"rowlabel"},name));
+      svg.append(el("rect",{x:l,y,width:W-l,height:rowH,fill:"var(--page)"}));
+      arr.forEach((v,i)=>{const o=Math.max(0,Math.min(1,norm(v)));if(o<0.04)return;svg.append(el("rect",{x:l+i*cw,y,width:Math.max(cw,0.6),height:rowH,fill:color,opacity:o.toFixed(2)}))});
+      const keptSet=new Set(kept);arr.forEach((v,i)=>{if(keptSet.has(i))svg.append(el("rect",{x:l+i*cw,y:y+rowH+3,width:Math.max(cw,1.2),height:5,fill:"var(--ink)"}))});
+      const hit=el("rect",{x:l,y,width:W-l,height:rowH+10,fill:"transparent"});hit.addEventListener("pointermove",e=>{const b=hit.getBoundingClientRect();const i=Math.max(0,Math.min(n-1,Math.floor((e.clientX-b.left)/b.width*n)));
+        showTip(e,k==="jev"?arr[i].toFixed(2):arr[i].toFixed(3),[`chunk ${i+1} of ${n}`,keptSet.has(i)?"kept":"dropped"])});hit.addEventListener("pointerleave",hideTip);svg.append(hit)});
+    svg.append(el("text",{x:l,y:H-2,class:"tick"},"start of document"));svg.append(el("text",{x:W,y:H-2,"text-anchor":"end",class:"tick"},"end"));
+    box.replaceChildren(svg)};ex._draw=draw;draw()}
+
+function scatter(id,pts,opt){
+  const box=document.getElementById(id);const W=Math.max(300,box.clientWidth),narrow=W<560,H=opt.h||340,l=46,r=narrow?16:(opt.padR||24),t=18,b=40;
+  const fx=opt.log?Math.log10:(v=>v),x0=fx(opt.x[0]),x1=fx(opt.x[1]);
+  const sx=v=>l+(W-l-r)*(fx(v)-x0)/(x1-x0),sy=v=>t+(H-t-b)*(1-(v-opt.y[0])/(opt.y[1]-opt.y[0]));
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":opt.aria});
+  opt.yticks.forEach(v=>{svg.append(el("line",{x1:l,x2:W-r,y1:sy(v),y2:sy(v),stroke:"var(--hair)","stroke-width":1}));svg.append(el("text",{x:l-8,y:sy(v)+4,"text-anchor":"end",class:"tick"},opt.yfmt(v)))});
+  opt.xticks.forEach(v=>{svg.append(el("line",{x1:sx(v),x2:sx(v),y1:t,y2:H-b,stroke:"var(--hair)","stroke-width":1}));svg.append(el("text",{x:sx(v),y:H-b+16,"text-anchor":"middle",class:"tick"},opt.xfmt(v)))});
+  svg.append(el("text",{x:(l+W-r)/2,y:H-4,"text-anchor":"middle",class:"ref"},opt.xlabel));
+  (opt.hrefs||[]).forEach(h0=>{svg.append(el("line",{x1:l,x2:W-r,y1:sy(h0.value),y2:sy(h0.value),stroke:"var(--axis)","stroke-width":1.5}));svg.append(el("text",{x:W-r,y:sy(h0.value)-5,"text-anchor":"end",class:"ref"},h0.label))});
+  const marks=pts.map(p=>({cx:sx(p.x),cy:sy(p.y)}));const placed=[];
+  const hits=(a,b)=>a.x0<b.x1&&a.x1>b.x0&&a.y0<b.y1&&a.y1>b.y0;
+  const order=pts.slice().sort((a,b)=>(a.ring||a.square?0:1)-(b.ring||b.square?0:1));
+  order.forEach(p=>{const cx=sx(p.x),cy=sy(p.y);const g=el("g");g.append(el("circle",{cx,cy,r:12,fill:"transparent"}));
+    g.append(p.square?el("rect",{x:cx-4.5,y:cy-4.5,width:9,height:9,rx:1.5,fill:"var(--surface)",stroke:"var(--ink)","stroke-width":1.75}):p.ring?el("circle",{cx,cy,r:4.5,fill:"var(--surface)",stroke:"var(--ink2)","stroke-width":1.75}):el("circle",{cx,cy,r:opt.r||6,fill:p.color,stroke:"var(--surface)","stroke-width":2}));
+    hover(g,p.head,p.lines);svg.append(g)});
+  // labels: longjev first, then newer models, then the rest; a label that cannot be placed cleanly is left to the tooltip and table
+  const rank=p=>p.ring?2:p.square?1:0;
+  pts.filter(p=>p.label&&(!narrow||!(p.ring||p.square))).sort((a,b)=>rank(a)-rank(b)).forEach(p=>{const cx=sx(p.x),cy=sy(p.y),w=p.label.length*6.1+4,hh=12;
+    const cands=[[cx+9,cy+4,"start"],[cx-9,cy+4,"end"],[cx+7,cy-8,"start"],[cx+7,cy+16,"start"],[cx-7,cy-8,"end"],[cx-7,cy+16,"end"],[cx,cy-11,"middle"],[cx,cy+19,"middle"]];
+    for(const [lx,ly,anchor] of cands){const x0b=anchor==="start"?lx:anchor==="end"?lx-w:lx-w/2;const box0={x0:x0b,x1:x0b+w,y0:ly-hh+2,y1:ly+3};
+      if(box0.x0<l||box0.x1>W-2||box0.y0<t-6||box0.y1>H-b)continue;
+      if(placed.some(q=>hits(q,box0)))continue;
+      if(marks.some(m=>!(m.cx===cx&&m.cy===cy)&&hits({x0:m.cx-7,x1:m.cx+7,y0:m.cy-7,y1:m.cy+7},box0)))continue;
+      placed.push(box0);svg.append(el("text",{x:lx,y:ly,"text-anchor":anchor,class:(p.ring||p.square)?"rowsub":"val"},p.label));break}});
+  box.replaceChildren(svg)}
+
+function render(){
+  const D=DATA,H=D.headline,keys=["truncate","embed","embed_then_jev","jev"];
+  const refs=[{value:.25,label:"guessing 25%"},{value:.537,label:"human experts 53.7%"}];
+  dotRows("c-headline",[...keys.map(k=>({label:SERIES[k].label,sub:`${H[k].budget/1000}K tokens kept`,points:[{s:k,a:H[k].test}]})),
+    {label:SERIES.vote.label,sub:"no final call",points:[{s:"vote",a:H.vote.test}]}],{interval:true,values:true,refs,max:.8,aria:"test accuracy by selector"});
+  table("t-headline",["Method","Budget","Test (held out)","95% interval","Dev (budget picked here)","Dev + test"],[...keys,"vote"].map(k=>[SERIES[k].label,H[k].budget?H[k].budget/1000+"K":"–",accCell(H[k].test),`${pct(H[k].test.low)} – ${pct(H[k].test.high)}`,accCell(H[k].dev),accCell(H[k].all)]));
+  const P=D.pairs.test,names={jev_vs_embed:["Jev","Embeddings"],embed_then_jev_vs_embed:["Embeddings, then Jev","Embeddings"],jev_vs_truncate:["Jev","Keep start and end"],embed_vs_truncate:["Embeddings","Keep start and end"],jev_vs_vote:["Jev final answer","Per-chunk vote"]};
+  table("pairs",["Paired comparison, same questions","Only first right","Only second right","Questions","p (McNemar)"],Object.keys(names).map(k=>[names[k][0]+"  vs  "+names[k][1],P[k].only_first,P[k].only_second,P[k].n,P[k].p.toFixed(2)]));
+  legend("l-sweep",keys);sweep("c-sweep");
+  table("t-sweep",["Selector","8K","16K","28K"],keys.map(k=>[SERIES[k].label,...["8000","16000","28000"].map(b=>accCell(D.sweep.dev[k][b]))]));
+  legend("l-break",[...keys,"vote"]);
+  const k5=[...keys,"vote"];const fmtRange=r=>r[1]>1e8?`over ${Math.round(r[0]/1000)}K tokens`:(r[0]?`${Math.round(r[0]/1000)}K – ${Math.round(r[1]/1000)}K tokens`:`under ${Math.round(r[1]/1000)}K tokens`);
+  dotRows("c-size",D.by_size.map(g=>({label:fmtRange(g.range),sub:g.n+" questions",points:k5.map(s=>({s,a:g[s]}))})),{max:.8});
+  table("t-size",["Input length","n",...k5.map(k=>SERIES[k].label)],D.by_size.map(g=>[fmtRange(g.range),g.n,...k5.map(s=>pct(g[s].acc))]));
+  const doms=Object.keys(H.jev.by.domain);
+  dotRows("c-domain",doms.map(d=>({label:d.replace(" Understanding","").replace("Long-dialogue History","Dialogue history").replace("Long In-context Learning","In-context learning").replace("Long Structured Data","Structured data"),sub:H.jev.by.domain[d].n+" questions",points:k5.map(s=>({s,a:H[s].by.domain[d]}))})),{max:.8});
+  table("t-domain",["Task type","n",...k5.map(k=>SERIES[k].label)],doms.map(d=>[d,H.jev.by.domain[d].n,...k5.map(s=>pct(H[s].by.domain[d].acc))]));
+  const A=D.agreement;table("agreement",["When the final answer and the vote…","Questions","Final answer right","Vote right"],[["agree",A.agree.n,pct(A.agree.acc),pct(A.agree.acc)],["disagree",A.disagree_final.n,pct(A.disagree_final.acc),pct(A.disagree_vote.acc)]]);
+  const C=D.control["8000"];
+  dotRows("c-control",[{label:SERIES.direct.label,sub:"up to 28K tokens",points:[{s:"direct",a:C.direct_same_items}]},...keys.map(k=>({label:SERIES[k].label,sub:"8K tokens kept",points:[{s:k,a:C[k]}]}))],{interval:true,values:true,max:.8,refs:[{value:.25,label:"guessing 25%"}]});
+  table("t-control",["Method","Correct","95% interval"],[["Full text",accCell(C.direct_same_items),`${pct(C.direct_same_items.low)} – ${pct(C.direct_same_items.high)}`],...keys.map(k=>[SERIES[k].label,accCell(C[k]),`${pct(C[k].low)} – ${pct(C[k].high)}`])]);
+  const cents=v=>(v*100).toFixed(2)+"¢";
+  bars("c-cost",keys.map(k=>({s:k,v:D.cost[k].usd_median,lines:[`mean ${cents(D.cost[k].usd_mean)}`,`${Math.round(1/D.cost[k].usd_median).toLocaleString()} questions per dollar`]})),cents);
+  table("t-cost",["Selector","Median cost","Mean cost","Questions per dollar"],keys.map(k=>[SERIES[k].label,cents(D.cost[k].usd_median),cents(D.cost[k].usd_mean),Math.round(1/D.cost[k].usd_median).toLocaleString()]));
+  const L=D.latency;if(L){
+    const ix=k=>L.selectors[k].indexed;
+    bars("c-latency",keys.map(k=>({s:k,v:L.selectors[k].seconds_median,lines:[`slowest ${L.selectors[k].seconds_max.toFixed(1)} s`,`${L.selectors[k].requests_median} requests, median`,`${L.selectors[k].n} questions`],
+      mark:ix(k)?{v:ix(k).seconds_median,lines:["with a prebuilt index","only the query is embedded live",`slowest ${ix(k).seconds_max.toFixed(1)} s`,`${ix(k).requests_median} requests, median`]}:null})),v=>v.toFixed(1)+" s");
+    document.getElementById("k-latency").hidden=!keys.some(ix);
+    table("t-latency",["Selector","Median","Slowest","Requests, median","Widened","Median with a prebuilt index"],keys.map(k=>[SERIES[k].label,L.selectors[k].seconds_median.toFixed(1)+" s",L.selectors[k].seconds_max.toFixed(1)+" s",L.selectors[k].requests_median,L.selectors[k].widened+" of "+L.selectors[k].n,ix(k)?ix(k).seconds_median.toFixed(1)+" s":"same (nothing to index)"]));
+    legend("l-lat",keys);const maxS=Math.max(...L.points.map(p=>p.seconds));const top=Math.ceil(maxS/10)*10;
+    scatter("c-latscatter",L.points.map(p=>({x:p.tokens/1000,y:p.seconds,color:SERIES[p.s].color,head:p.seconds.toFixed(1)+" s",lines:[SERIES[p.s].label,Math.round(p.tokens/1000)+"K-token input",p.requests+" requests"]})),
+      {x:[20,180],y:[0,top],xticks:[40,80,120,160],yticks:Array.from({length:top/10+1},(_,i)=>i*10),xfmt:v=>v+"K",yfmt:v=>v+" s",xlabel:"input length, tokens",aria:"latency against input length",h:300,r:5})}
+  const LL=D.llm;if(LL){legend("l-llm",keys);
+    const mine=keys.map(k=>({x:LL.longjev[k].usd*100,y:LL.longjev[k].acc*100,color:SERIES[k].color,label:SERIES[k].short,head:pct(LL.longjev[k].acc),lines:[SERIES[k].label,(LL.longjev[k].usd*100).toFixed(2)+"¢ per question, measured",`${LL.longjev[k].k} of ${LL.longjev[k].n} correct`]}));
+    const theirs=LL.models.map(m=>({x:m.usd*100,y:m.short,ring:true,label:m.name,head:m.short.toFixed(1)+"%",lines:[m.name+(m.mode==="reasoning"?" · reasoning":" · direct answer"),(m.usd*100).toFixed(2)+"¢ per question, estimated","published score"]}));
+    const newer=(LL.newer||[]).map(m=>({x:m.usd*100,y:m.overall,square:true,label:m.name,head:m.overall.toFixed(1)+"% overall",lines:[m.name+" · reasoning",(m.usd*100).toFixed(2)+"¢ per question, estimated","overall score, all lengths","reported by "+m.by,...(m.note?[m.note]:[])]}));
+    const lg=document.getElementById("l-llm");[["ring","LLM, short-category score (LongBench leaderboard)"],["square","Newer LLM, overall score only (vendor model cards)"]].forEach(([k,txt])=>{const s=h("span");const i=h("i",{class:"mk-"+k});s.append(i,document.createTextNode(txt));lg.append(s)});
+    scatter("c-llm",[...theirs,...newer,...mine],{log:true,x:[0.05,50],y:[25,75],xticks:[0.1,1,10],yticks:[30,40,50,60,70],xfmt:v=>v+"¢",yfmt:v=>v+"%",xlabel:"cost per question (log scale)",hrefs:[{value:LL.human_short,label:"human experts "+LL.human_short+"%"}],aria:"accuracy against cost",padR:110,h:470});
+    table("t-llm",["System","How it answers","Accuracy","What the score covers","Cost per question","Cost vs Jev reads all"],[
+      ...keys.map(k=>["longjev · "+SERIES[k].label,"selection, then one Jev call",pct(LL.longjev[k].acc),"short category, measured here",(LL.longjev[k].usd*100).toFixed(2)+"¢  measured",(LL.longjev[k].usd/LL.longjev.jev.usd).toFixed(1)+"×"]),
+      ...(LL.newer||[]).map(m=>[m.name,"reasoning, reads everything",m.overall.toFixed(1)+"%","all lengths, reported by "+m.by,(m.usd*100).toFixed(2)+"¢  estimated",(m.usd/LL.longjev.jev.usd).toFixed(1)+"×"]),
+      ...LL.models.map(m=>[m.name,m.mode==="reasoning"?"reasoning, reads everything":"direct answer, reads everything",m.short.toFixed(1)+"%","short category, LongBench leaderboard",(m.usd*100).toFixed(2)+"¢  estimated",(m.usd/LL.longjev.jev.usd).toFixed(1)+"×"])])}
+  const sc=document.getElementById("strips");sc.replaceChildren();(D.examples||[]).forEach(ex=>strip(sc,ex));
+}
+function boot(){
+  const D=DATA;const meta=document.getElementById("meta");
+  [["Benchmark","LongBench v2"],["Questions run",D.n_items+" of 503"],["Needed reducing",D.n_long+` (${D.n_dev} dev, ${D.n_test} test)`],["Control group",D.n_control],["Model",D.model],["Spend","$"+D.spend_usd.toFixed(2)],["Date",D.date]].forEach(([k,v])=>{const s=h("span");s.append(document.createTextNode(k+" "),h("b",{},String(v)));meta.append(s)});
+  document.getElementById("foot").textContent=D.footer;
+  render();let t;addEventListener("resize",()=>{clearTimeout(t);t=setTimeout(render,120)});
+}
+boot();
+</script>
